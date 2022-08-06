@@ -1,5 +1,6 @@
 import { Router, Response, Request, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
+import userRepository from "../repositories/user.repository";
 
 // get /users
 // get /users/:uuid
@@ -9,14 +10,15 @@ import { StatusCodes } from "http-status-codes";
 
 const usersRouter = Router();
 
-usersRouter.get('/users', (req: Request, res: Response, next: NextFunction) => {
-  const users = [{ userName: 'Leonardo' }];
+usersRouter.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+  const users = await userRepository.findAllUsers();
   res.status(StatusCodes.OK).json(users);
 });
 
-usersRouter.get('/users/:uuid', (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRouter.get('/users/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
   const uuid = req.params.uuid;
-  res.status(StatusCodes.OK).send({ uuid });
+  const user = await userRepository.findById(uuid);
+  res.status(StatusCodes.OK).send(user);
 });
 
 usersRouter.post('/users', (req: Request, res: Response, next: NextFunction) => {
