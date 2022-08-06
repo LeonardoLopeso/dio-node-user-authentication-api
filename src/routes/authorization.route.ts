@@ -12,8 +12,6 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
   try {
     const user = req.user;
 
-    console.log('auth user: ', user);
-
     if (!user) {
       throw new ForbiddenError('Usuário não informado!');
     }
