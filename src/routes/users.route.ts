@@ -1,17 +1,13 @@
 import { Router, Response, Request, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import DatabaseError from "../models/errors/database.error.model";
 import userRepository from "../repositories/user.repository";
-
-// get /users
-// get /users/:uuid
-// post /users/:uuid
-// put /users/:uuid
-// delete /users/:uuid  
 
 const usersRouter = Router();
 
 usersRouter.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+
+  console.log(req.headers['authorization']);
+
   const users = await userRepository.findAllUsers();
   res.status(StatusCodes.OK).json(users);
 });
